@@ -10,37 +10,31 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.app.database.repository.RouteRepository
+import com.app.database.testdatasource.RouteLocalDataSource
+import com.example.fasttravel.screen.main.ExploreSection
+import com.example.fasttravel.screen.main.ExploreViewModel
 import com.example.fasttravel.ui.theme.FastTravelTheme
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val routeRepository = RouteRepository(RouteLocalDataSource())
+        val routes = routeRepository.routes
         setContent {
             FastTravelTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    Greeting("Android")
+
+                    ) {
+                    ExploreSection(viewModel = ExploreViewModel(routeRepository))
+
                 }
             }
         }
     }
 }
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    FastTravelTheme {
-        Greeting("Android")
-    }
-}
