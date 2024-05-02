@@ -1,18 +1,30 @@
 package com.example.fasttravel.screen.main
 
+import android.location.Location
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.app.database.model.Route
 import com.app.database.repository.RouteRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+
+
 class ExploreViewModel @Inject constructor(
-    private val routeRepository: RouteRepository
+    private val routeRepository: RouteRepository,
+    //private val locationTracker: LocationTracker
+
 ) : ViewModel() {
+
+    var currentLocation by mutableStateOf<Location?>(null)
+
     private val _exploreList = MutableStateFlow<List<Route>>(emptyList())
     val exploreList: StateFlow<List<Route>> = _exploreList
 
@@ -30,6 +42,7 @@ class ExploreViewModel @Inject constructor(
     init {
         fetchExploreList()
     }
+
 
 
     fun toggleExpanded() {
